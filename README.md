@@ -1,0 +1,2 @@
+# hajiboot-jdbc
+Spring JDBCによるDBアクセス
