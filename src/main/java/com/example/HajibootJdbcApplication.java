@@ -1,6 +1,7 @@
 package com.example;
 
 import com.example.domain.Customer;
+import com.example.repository.CustomerRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
@@ -21,15 +22,14 @@ import java.sql.SQLException;
 public class HajibootJdbcApplication implements CommandLineRunner {
 
     @Autowired
-    NamedParameterJdbcTemplate jdbcTemplate;
+    CustomerRepository customerRepository;
 
     @Override
     public void run(String... strings) throws Exception {
-        String sql = "SELECT id, first_name, last_name FROM customers WHERE id = :id";
-        SqlParameterSource param = new MapSqlParameterSource().addValue("id", 1);
-        Customer result = jdbcTemplate.queryForObject(sql, param, (rs, rowNum) -> new Customer(rs.getInt("id"), rs.getString("first_name"), rs.getString("last_name")));
-        System.out.println("result = " + result);
-
+        // データ追加
+        Customer created = customerRepository.save(new Customer(null, "Hidetoshi", "Dekisugi"));
+        System.out.println(created + "created!");
+        customerRepository.findAll().forEach(System.out::println);
     }
 
     public static void main(String[] args) {
